@@ -1,0 +1,11 @@
+1. lhsPriority is not defined
+2. blockchain is not defined in type WalletBalance
+3. wrong filter logic when it will filter balance amount <= 0
+4. item in sortedBalances is WalletBalance but in line const rows = sortedBalances.map((balance: FormattedWalletBalance, index: number), it claims that balance is FormattedWalletBalance.
+5. formattedBalances is defined but unused
+6. prices is unnecessary dependency in sortedBalances useMemo
+7. should have safer type for blockchain parameter in function getPriority instead of any
+8. key={index} is anti-pattern, it can cause incorrect render if the list change order or item is removed
+9. should not use default function toFixed(), because it will default to zero decimal places, which not good for money
+10. children is defined but unused
+11. prices[balance.currency] can be null becuase balance.currency may noy be in prices or null itself

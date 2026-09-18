@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fancy Form — Currency Swap</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%B1%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- You may add more stuff here -->
+  <link href="style.css" rel="stylesheet" />
+</head>
+
+<body>
+
+  <div class="stage">
+    <div class="watermark" aria-hidden="true"></div>
+
+    <div class="wrap">
+      <header class="topbar">
+        <div class="wordmark">
+          <span class="wordmark-mark">💱</span>
+          <span class="wordmark-text">
+            <span class="wordmark-title">Switch</span>
+            <span class="wordmark-sub">Currency swap</span>
+          </span>
+        </div>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch to dark theme" aria-pressed="false">
+          <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4.5" />
+            <path d="M12 2.5v2.5M12 19v2.5M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2.5 12H5M19 12h2.5M4.2 19.8L6 18M18 6l1.8-1.8" />
+          </svg>
+          <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 14.2A8.2 8.2 0 1 1 9.8 4a6.4 6.4 0 0 0 10.2 10.2Z" />
+          </svg>
+        </button>
+      </header>
+
+      <!-- You may reorganise the whole HTML, as long as your form achieves the same effect. -->
+      <div class="card" id="card">
+        <div class="band band-top" aria-hidden="true"></div>
+
+        <form id="swap-form" class="form" onsubmit="return false;" novalidate>
+          <div class="card-head">
+            <h1>Swap</h1>
+            <span class="serial" id="serial" title="Derived from the price snapshot timestamp"></span>
+          </div>
+
+          <div class="panel" id="panel-from">
+            <div class="panel-top">
+              <label class="panel-label" for="input-amount">Amount to send</label>
+              <button type="button" class="max-btn" id="max-btn">Use max</button>
+            </div>
+            <div class="panel-row">
+              <input id="input-amount" class="panel-amount" type="text" inputmode="decimal" autocomplete="off"
+                     spellcheck="false" placeholder="0" aria-label="Amount to send" />
+              <button type="button" class="token-select" id="token-select-from" aria-haspopup="dialog">
+                <img class="token-icon" id="icon-from" alt="" width="26" height="26" />
+                <span class="token-select-symbol" id="symbol-from">ETH</span>
+                <svg class="token-select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+              </button>
+            </div>
+            <div class="panel-bottom">
+              <span class="panel-usd" id="usd-from"></span>
+              <span class="panel-balance" id="balance-from"></span>
+            </div>
+            <p class="panel-error" id="panel-input-error" role="alert" hidden></p>
+          </div>
+
+          <div class="flip-row">
+            <button type="button" class="flip-btn" id="flip-btn" aria-label="Swap the two tokens">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M7 10V5m0 0L4 8m3-3l3 3" />
+                <path d="M17 14v5m0 0l3-3m-3 3l-3-3" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="panel" id="panel-to">
+            <div class="panel-top">
+              <label class="panel-label" for="output-amount">Amount to receive</label>
+            </div>
+            <div class="panel-row">
+              <input id="output-amount" class="panel-amount" type="text" inputmode="decimal" autocomplete="off"
+                     spellcheck="false" placeholder="0" aria-label="Amount to receive" />
+              <button type="button" class="token-select" id="token-select-to" aria-haspopup="dialog">
+                <img class="token-icon" id="icon-to" alt="" width="26" height="26" />
+                <span class="token-select-symbol" id="symbol-to">USDC</span>
+                <svg class="token-select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+              </button>
+            </div>
+            <div class="panel-bottom">
+              <span class="panel-usd" id="usd-to"></span>
+              <span class="panel-balance" id="balance-to"></span>
+            </div>
+            <p class="panel-error" id="panel-output-error" role="alert" hidden></p>
+          </div>
+
+          <button type="button" class="rate-line" id="rate-line">
+            <span id="rate-text"></span>
+            <span class="rate-hint">tap to flip</span>
+          </button>
+
+          <button type="submit" class="submit-btn" id="submit-btn">
+            <svg class="spinner" id="submit-spinner" viewBox="0 0 24 24" aria-hidden="true" hidden>
+              <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-dasharray="42 100" stroke-linecap="round" />
+            </svg>
+            <span id="submit-label">CONFIRM SWAP</span>
+          </button>
+
+          <p class="fine-print" id="fine-print"></p>
+        </form>
+
+        <div class="success" id="success-view" hidden>
+          <div class="success-seal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7" /></svg>
+          </div>
+          <h1>Swap confirmed</h1>
+          <p class="success-line" id="success-line"></p>
+          <p class="success-serial" id="success-serial"></p>
+          <button type="button" class="submit-btn" id="reset-btn">Make another swap</button>
+        </div>
+
+        <div class="band band-bottom" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="picker-backdrop" id="picker-backdrop" hidden>
+    <div class="picker-panel" role="dialog" aria-modal="true" aria-label="Select a token">
+      <div class="picker-head">
+        <div class="picker-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="picker-search-icon" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" />
+          </svg>
+          <input type="text" id="picker-search-input" inputmode="search" placeholder="Search name or symbol" aria-label="Search tokens" />
+        </div>
+        <button type="button" class="icon-btn" id="picker-close" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12" /></svg>
+        </button>
+      </div>
+      <ul class="picker-list" id="picker-list"></ul>
+    </div>
+  </div>
+
+  <script type="module" src="script.js"></script>
+  <script type="module" src="data.js"></script>
+</body>
+
+</html>
