@@ -77,7 +77,6 @@ const TOKEN_ICON_URL = (symbol) =>
     return h;
   }
 
-  // Deterministic pseudo "demo wallet" balance so the form has something to validate against.
   function demoBalance(token) {
     var h = hashSymbol(token.symbol);
     var usdTarget = 250 + (h % 4750); // between $250 and $5000
